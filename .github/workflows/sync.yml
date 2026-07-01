@@ -1,0 +1,23 @@
+name: Sync Fork
+
+on:
+  schedule:
+    - cron: '0 0 * * 0' 
+  workflow_dispatch: # Allows manual triggering from the Actions tab
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout target branch
+        uses: actions/checkout@v4
+        with:
+          ref: main # Change to 'master' if your branch uses the older naming convention
+
+      - name: Sync Upstream
+        uses: aormsby/Fork-Sync-With-Upstream-action@v3.4
+        with:
+          target_sync_branch: main
+          target_repo_token: ${{ secrets.GITHUB_TOKEN }}
+          upstream_sync_branch: main
+          upstream_sync_repo: ORIGINAL_OWNER/ORIGINAL_REPO # Replace with the source repository path
